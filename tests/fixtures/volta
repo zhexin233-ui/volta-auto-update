@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -u
+
+case "${1:-}" in
+    list)
+        if [ "${MOCK_VOLTA_LIST_FAIL:-0}" -eq 1 ]; then
+            echo "模拟 Volta 列表读取失败" >&2
+            exit 3
+        fi
+        printf '%b' "${MOCK_VOLTA_LIST_OUTPUT:-}"
+        ;;
+    install)
+        package="${2:-}"
+        if [ -n "${MOCK_INSTALL_LOG:-}" ]; then
+            printf '%s\n' "$package" >> "$MOCK_INSTALL_LOG"
+        fi
+
+        if [ "$package" = "${MOCK_VOLTA_FAIL_PACKAGE:-}" ]; then
+            echo "模拟安装失败：${package}" >&2
+            exit 42
+        fi
+        ;;
+    *)
+        echo "不支持的模拟 Volta 命令：${1:-}" >&2
+        exit 2
+        ;;
+esac

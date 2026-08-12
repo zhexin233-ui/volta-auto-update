@@ -5,13 +5,13 @@
 ## ADDED Requirements
 
 ### Requirement: 检测已安装工具版本
-系统 SHALL 能够检测 Volta 管理的 codex、claude-code 和 gemini-cli 的当前安装版本。
+系统 SHALL 能够检测 Volta 管理的 codex、claude-code 和 opencode 的当前安装版本。
 
 **实现约束：**
 - MUST 使用 `volta list all` 命令获取已安装工具列表
-- MUST 使用精确包名匹配：`grep '^package @openai/codex@'` 避免子串误匹配
-- MUST 使用 sed 提取版本号：`sed 's/.*@\([0-9.]\+\).*/\1/'`
-- 如果 grep 找不到包名，MUST 返回状态 `NOT_INSTALLED`
+- MUST 使用精确包名匹配，避免子串误匹配
+- MUST 从 `volta list all` 的包字段中提取最后一个 `@` 后的版本号，同时兼容 scoped 包和非 scoped 包
+- 如果找不到包名，MUST 返回状态 `NOT_INSTALLED`
 - 如果找到包名但无法解析版本，MUST 返回状态 `UNKNOWN`
 
 #### Scenario: 成功检测所有工具版本

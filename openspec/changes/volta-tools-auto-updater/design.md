@@ -2,8 +2,8 @@
 
 当前用户使用 Volta (v2.0.2) 管理多个 Node.js 开发工具，包括：
 - @openai/codex（当前 0.89.0，最新 0.92.0）
-- @google/gemini-cli（当前 0.25.2，最新 0.26.0）
 - @anthropic-ai/claude-code（当前 2.1.19，最新 2.1.22）
+- opencode-ai（最新版本以 npm registry 为准）
 
 手动检查和更新这些工具需要：
 1. 运行 `volta list all` 查看当前版本

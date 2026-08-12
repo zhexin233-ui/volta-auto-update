@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -u
+
+case "${MOCK_CURL_MODE:-success}" in
+    network)
+        echo "模拟网络失败" >&2
+        exit 7
+        ;;
+    parse)
+        echo '{"name":"missing-version"}'
+        exit 0
+        ;;
+esac
+
+url=""
+for argument in "$@"; do
+    url="$argument"
+done
+
+case "$url" in
+    *"@openai/codex/latest")
+        version="${MOCK_CODEX_LATEST:-1.0.0}"
+        ;;
+    *"@anthropic-ai/claude-code/latest")
+        version="${MOCK_CLAUDE_LATEST:-1.0.0}"
+        ;;
+    *"opencode-ai/latest")
+        version="${MOCK_OPENCODE_LATEST:-1.0.0}"
+        ;;
+    *"custom-tool/latest")
+        version="${MOCK_CUSTOM_LATEST:-1.0.0}"
+        ;;
+    *)
+        echo "未知的模拟 registry URL：${url}" >&2
+        exit 22
+        ;;
+esac
+
+printf '{"version":"%s"}\n' "$version"

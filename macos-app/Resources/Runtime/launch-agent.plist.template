@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.zhexin.volta-auto-update.scheduler</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>__RUNNER_PATH__</string>
+        <string>scheduled</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>__HOUR__</integer>
+        <key>Minute</key>
+        <integer>__MINUTE__</integer>
+    </dict>
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>60</integer>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>__HOME_PATH__</string>
+        <key>VOLTA_HOME</key>
+        <string>__VOLTA_HOME__</string>
+        <key>PATH</key>
+        <string>__VOLTA_HOME__/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>__STDOUT_LOG__</string>
+    <key>StandardErrorPath</key>
+    <string>__STDERR_LOG__</string>
+</dict>
+</plist>

@@ -1,6 +1,6 @@
 # Volta 工具自动更新器
 
-自动检查和更新 Volta 管理的开发工具（Codex、Claude Code、Gemini CLI）到最新版本。
+自动检查和更新 Volta 管理的开发工具（Codex、Claude Code、opencode）到最新版本。
 
 ## 功能特性
 
@@ -8,6 +8,9 @@
 - ✅ 一键更新所有过期的工具
 - ✅ 友好的命令行界面，带 emoji 状态指示
 - ✅ 支持 macOS 双击执行
+- ✅ 原生 macOS 菜单栏控制面板
+- ✅ 每日自动更新（默认 09:00，可自定义），支持休眠与关机补跑
+- ✅ 可视化新增或删除需要管理的 npm 工具
 - ✅ 完善的错误处理和进度显示
 
 ## 使用方法
@@ -22,6 +25,25 @@
 
 直接双击 `update-volta-tools.command` 文件即可在终端窗口中运行。
 
+### 方法 3：原生 macOS App
+
+构建 App：
+
+```bash
+./macos-app/build-app.sh
+```
+
+构建产物位于 `dist/Volta 自动更新.app`。控制面板支持：
+
+- 查看三个工具的当前版本与最新版本
+- 立即检查并更新
+- 自定义每日调度时间（默认 09:00），并启用或停用调度
+- 新增或删除需要检查更新的 npm 工具
+- 查看最近执行状态与运行日志
+- 从菜单栏快速打开面板或执行更新
+
+自动调度使用用户级 `launchd`，不需要 App 持续打开。默认执行时间为 09:00，可在控制面板中修改。Mac 在设定时间休眠时会在唤醒后补跑；关机后登录且已经超过设定时间时也会补跑，当天的自动任务最多执行一次。
+
 ## 输出示例
 
 ```
@@ -29,18 +51,18 @@
 正在检查以下工具的版本：
   - Codex
   - Claude Code
-  - Gemini CLI
+  - opencode
 
 🔍 正在检查 Codex...
 🔍 正在检查 Claude Code...
-🔍 正在检查 Gemini CLI...
+🔍 正在检查 opencode...
 
 ========================================
 工具名            当前版本 最新版本 状态
 ========================================
 Codex                0.89.0       0.92.0       ⚠️ 需要更新
 Claude Code          2.1.19       2.1.22       ⚠️ 需要更新
-Gemini CLI           0.25.2       0.26.0       ⚠️ 需要更新
+opencode             1.15.7       1.15.10      ⚠️ 需要更新
 ========================================
 
 开始更新过期的工具...
@@ -49,8 +71,8 @@ Gemini CLI           0.25.2       0.26.0       ⚠️ 需要更新
 ✓ Codex 已更新到 0.92.0
 🔄 正在更新 Claude Code 从 2.1.19 到 2.1.22...
 ✓ Claude Code 已更新到 2.1.22
-🔄 正在更新 Gemini CLI 从 0.25.2 到 0.26.0...
-✓ Gemini CLI 已更新到 0.26.0
+🔄 正在更新 opencode 从 1.15.7 到 1.15.10...
+✓ opencode 已更新到 1.15.10
 
 ========================================
 更新完成！
@@ -81,6 +103,16 @@ Gemini CLI           0.25.2       0.26.0       ⚠️ 需要更新
 - 使用 npm registry API 查询最新版本
 - 使用 `volta install <package>@latest` 执行更新
 - 兼容 Bash 3.2+（macOS 默认版本）
+- 使用 SwiftUI 构建原生 macOS 控制面板
+- 使用 `launchd` 执行用户级每日调度
+
+## 测试
+
+```bash
+./tests/test-update-volta-tools.sh
+./tests/test-scheduler-runtime.sh
+swift build --package-path macos-app -c release
+```
 
 ## 许可证
 

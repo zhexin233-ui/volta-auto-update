@@ -2,12 +2,12 @@
 
 - [x] 1.1 实现 Volta 可用性检查（使用 command -v volta）
 - [x] 1.2 实现并发实例检测（使用 pgrep 检查其他运行实例）
-- [x] 1.3 定义工具列表数组（codex、claude-code、gemini-cli 的包名和显示名）
+- [x] 1.3 定义工具列表数组（codex、claude-code、opencode 的包名和显示名）
 - [x] 1.4 初始化计数器变量（成功、失败、跳过）
 
 ## 2. 版本检查功能
 
-- [x] 2.1 实现 check_installed_version 函数（使用 volta list all + grep + sed）
+- [x] 2.1 实现 check_installed_version 函数（使用 volta list all + 精确包名匹配 + 版本字段提取）
 - [x] 2.2 实现 check_latest_version 函数（使用 curl 查询 npm registry API）
 - [x] 2.3 实现 JSON 解析逻辑（使用 grep + sed 提取 version 字段）
 - [x] 2.4 实现版本比较逻辑（字符串不等比较）

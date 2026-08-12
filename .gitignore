@@ -1,1 +1,4 @@
 .ace-tool/
+.DS_Store
+dist/
+macos-app/.build/

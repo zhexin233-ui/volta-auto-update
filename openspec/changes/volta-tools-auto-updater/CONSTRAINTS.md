@@ -190,8 +190,8 @@
 ### 13.1 硬编码工具
 - **约束：** MUST 硬编码以下三个工具
   1. `@openai/codex`（显示名：codex）
-  2. `@google/gemini-cli`（显示名：gemini-cli）
-  3. `@anthropic-ai/claude-code`（显示名：claude-code）
+  2. `@anthropic-ai/claude-code`（显示名：claude-code）
+  3. `opencode-ai`（显示名：opencode）
 
 ### 13.2 不支持配置
 - **约束：** 不提供配置文件来自定义工具列表
