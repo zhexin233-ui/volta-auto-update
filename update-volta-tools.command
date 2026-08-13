@@ -82,15 +82,26 @@ initialize_volta_path() {
         return
     fi
 
-    local volta_home="${VOLTA_HOME:-}"
-    if [ -z "$volta_home" ] && [ -n "${HOME:-}" ]; then
-        volta_home="${HOME}/.volta"
-    fi
+    local volta_candidate
+    local volta_candidates=()
 
-    if [ -n "$volta_home" ] && [ -x "${volta_home}/bin/volta" ]; then
-        export VOLTA_HOME="$volta_home"
-        export PATH="${volta_home}/bin:${PATH:-/usr/bin:/bin:/usr/sbin:/sbin}"
+    if [ -n "${VOLTA_HOME:-}" ]; then
+        volta_candidates+=("${VOLTA_HOME}/bin/volta")
     fi
+    if [ -n "${HOME:-}" ]; then
+        volta_candidates+=("${HOME}/.volta/bin/volta")
+    fi
+    if [ -n "${HOMEBREW_PREFIX:-}" ]; then
+        volta_candidates+=("${HOMEBREW_PREFIX}/bin/volta")
+    fi
+    volta_candidates+=("/opt/homebrew/bin/volta" "/usr/local/bin/volta")
+
+    for volta_candidate in "${volta_candidates[@]}"; do
+        if [ -x "$volta_candidate" ]; then
+            export PATH="${volta_candidate%/*}:${PATH:-/usr/bin:/bin:/usr/sbin:/sbin}"
+            return
+        fi
+    done
 }
 
 # 环境检查

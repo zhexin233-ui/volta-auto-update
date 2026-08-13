@@ -140,6 +140,29 @@ test_default_volta_home_is_discovered() {
     assert_contains "$STDOUT_LOG" "所有工具已是最新版本！"
 }
 
+test_homebrew_volta_is_discovered() {
+    reset_mocks
+    local isolated_home="${TEST_TEMP_DIR}/homebrew-home"
+    local homebrew_prefix="${TEST_TEMP_DIR}/homebrew"
+    local path_without_volta="${TEST_TEMP_DIR}/homebrew-path-without-volta"
+    mkdir -p "$isolated_home" "${homebrew_prefix}/bin" "$path_without_volta"
+    cp "${FIXTURE_DIR}/volta" "${homebrew_prefix}/bin/volta"
+    cp "${FIXTURE_DIR}/curl" "${path_without_volta}/curl"
+    cp "${FIXTURE_DIR}/pgrep" "${path_without_volta}/pgrep"
+    chmod +x "${homebrew_prefix}/bin/volta" "${path_without_volta}/curl" "${path_without_volta}/pgrep"
+
+    HOME="$isolated_home" \
+        VOLTA_HOME="${isolated_home}/.volta" \
+        HOMEBREW_PREFIX="$homebrew_prefix" \
+        PATH="${path_without_volta}:/usr/bin:/bin" \
+        MOCK_INSTALL_LOG="$INSTALL_LOG" \
+        VOLTA_AUTO_UPDATE_TOOLS_FILE="$MOCK_TOOLS_FILE" \
+        /bin/bash "$SCRIPT_PATH" > "$STDOUT_LOG" 2> "$STDERR_LOG" \
+        || fail "应能从 Homebrew 的 bin 目录找到 Volta"
+
+    assert_contains "$STDOUT_LOG" "所有工具已是最新版本！"
+}
+
 test_custom_tool_configuration() {
     reset_mocks
     MOCK_TOOLS_FILE="${TEST_TEMP_DIR}/custom-tools.tsv"
@@ -179,6 +202,7 @@ test_install_failure_does_not_stop_following_tools
 test_unknown_and_not_installed_are_distinct
 test_volta_list_failure_is_soft
 test_default_volta_home_is_discovered
+test_homebrew_volta_is_discovered
 test_custom_tool_configuration
 test_empty_and_invalid_tool_configuration
 
